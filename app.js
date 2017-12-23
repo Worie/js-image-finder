@@ -2,11 +2,14 @@ const path = require('path');
 
 const argv = require('yargs').argv;
 
+// TODO: Add validation
 let pathToRead = argv.path;
+const regexp = argv.regexp;
 const fs = require('fs');
 
 const regexps = require('./regexps');
 const imageTest = regexps.imageTest;
+const customTest = regexps.customTest(regexp) || imageTest;
 
 if (path.isAbsolute(pathToRead)) {
   pathToRead = path.relative(__dirname, pathToRead) || './';
@@ -20,7 +23,7 @@ const readAbsolutePath = function readAbsolutePath (pathToRead) {
 
     files.forEach(function (file) {
       const absoluteFilePath = path.join(__dirname, pathToRead, file);
-      if (imageTest(file)) {
+      if (customTest(file)) {
         const stats = fs.statSync(absoluteFilePath);
         console.log(`${absoluteFilePath} : ${stats['size']/1000.0}KB`);
       } else if (fs.lstatSync(absoluteFilePath).isDirectory()) {
@@ -32,4 +35,6 @@ const readAbsolutePath = function readAbsolutePath (pathToRead) {
 
 readAbsolutePath(pathToRead);
 
-
+// parametr - filtr 
+// console.table 
+// saving to file 

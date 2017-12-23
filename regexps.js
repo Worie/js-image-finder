@@ -21,6 +21,17 @@ var imageTest = function (fileNameToTest) {
                   .test(fileNameToTest);
 };
 
+var customTest = function (regexp) {
+  if (!regexp) {
+    return false;
+  }
+  return function (fileNameToTest) {
+    return new RegExp(regexp)
+                  .test(fileNameToTest)
+  };
+};
+
 module.exports = {
-  imageTest: imageTest 
+  imageTest: imageTest,
+  customTest: customTest
 };
