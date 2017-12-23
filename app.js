@@ -8,6 +8,12 @@ var fs = require('fs');
 var regexps = require('./regexps');
 var imageTest = regexps.imageTest;
 
-fs.readdirSync(testFolder).forEach(file => {
-  console.log(imageTest(file));
-});
+fs.readdir(testFolder, function (err, files) {
+  if (err) {
+    throw err;
+  }
+  
+  files.forEach(function (file) {
+    console.log(imageTest(file));
+  });
+})
