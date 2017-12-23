@@ -11,6 +11,10 @@ const regexps = require('./regexps');
 const imageTest = regexps.imageTest;
 const customTest = regexps.customTest(regexp) || imageTest;
 
+const finalObject = {
+  matches: []
+};
+
 if (path.isAbsolute(pathToRead)) {
   pathToRead = path.relative(__dirname, pathToRead) || './';
 };
@@ -25,15 +29,24 @@ const readAbsolutePath = function readAbsolutePath (pathToRead) {
       const absoluteFilePath = path.join(__dirname, pathToRead, file);
       if (customTest(file)) {
         const stats = fs.statSync(absoluteFilePath);
-        console.log(`${absoluteFilePath} : ${stats['size']/1000.0}KB`);
+        const size = `${stats['size']/1000.0}KB`;
+//        console.log(`${absoluteFilePath} : ${size}`);
+        finalObject.matches.push({
+          path: absoluteFilePath,
+          size: size
+        });
       } else if (fs.lstatSync(absoluteFilePath).isDirectory()) {
         readAbsolutePath(path.join(pathToRead, file));
       }
     });
-  })
+  });
 };
 
 readAbsolutePath(pathToRead);
+
+process.on('exit', () => {
+  console.log(JSON.stringify(finalObject));
+});
 
 // parametr - filtr 
 // console.table 
