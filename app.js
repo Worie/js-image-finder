@@ -8,6 +8,9 @@ var fs = require('fs');
 var regexps = require('./regexps');
 var imageTest = regexps.imageTest;
 
+if (path.isAbsolute(pathToRead)) {
+  pathToRead = path.relative(__dirname, pathToRead) || './';
+};
 
 var readAbsolutePath = function readAbsolutePath (pathToRead) {
   fs.readdir(pathToRead, function (err, files) {
@@ -17,7 +20,6 @@ var readAbsolutePath = function readAbsolutePath (pathToRead) {
 
     files.forEach(function (file) {
       var absoluteFilePath = path.join(__dirname, pathToRead, file);
-
       if (imageTest(file)) {
         console.log(absoluteFilePath);
       } else if (fs.lstatSync(absoluteFilePath).isDirectory()) {
