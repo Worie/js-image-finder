@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Worie/js-image-finder/issues"
   },
-  "homepage": "https://github.com/Worie/js-image-finder#readme"
+  "homepage": "https://github.com/Worie/js-image-finder#readme",
+  "dependencies": {
+    "yargs": "^10.0.3"
+  }
 }

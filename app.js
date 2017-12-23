@@ -1,6 +1,8 @@
 var path = require('path')
-// 
-var testFolder = './strt/';
+ 
+var argv = require('yargs').argv;
+
+var testFolder = argv.path;
 var fs = require('fs');
 
 fs.readdirSync(testFolder).forEach(file => {
