@@ -14,6 +14,8 @@ fs.readdir(testFolder, function (err, files) {
   }
   
   files.forEach(function (file) {
-    console.log(imageTest(file));
+    if(imageTest(file)){
+      console.log(path.join(__dirname, testFolder, file))
+    }
   });
 })
