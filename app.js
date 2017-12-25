@@ -2,9 +2,12 @@ const path = require('path');
 
 const argv = require('yargs').argv;
 
-// TODO: Add validation
 let pathToRead = argv.path;
 const regexp = argv.regexp;
+
+// todo: add json flag
+// const regexp = argv.json;
+
 const fs = require('fs');
 
 const regexps = require('./regexps');
@@ -15,9 +18,14 @@ const finalObject = {
   matches: []
 };
 
-if (path.isAbsolute(pathToRead)) {
-  pathToRead = path.relative(__dirname, pathToRead) || './';
-};
+// handle error
+if (!pathToRead){
+  console.error("No path specified");
+}
+
+  if (path.isAbsolute(pathToRead)) {
+    pathToRead = path.relative(__dirname, pathToRead) || './';
+  };
 
 const readAbsolutePath = function readAbsolutePath (pathToRead) {
   fs.readdir(pathToRead, function (err, files) {
@@ -30,7 +38,7 @@ const readAbsolutePath = function readAbsolutePath (pathToRead) {
       if (customTest(file)) {
         const stats = fs.statSync(absoluteFilePath);
         const size = `${stats['size']/1000.0}KB`;
-//        console.log(`${absoluteFilePath} : ${size}`);
+        console.log(`${absoluteFilePath} : ${size}`);
         finalObject.matches.push({
           path: absoluteFilePath,
           size: size
@@ -42,11 +50,15 @@ const readAbsolutePath = function readAbsolutePath (pathToRead) {
   });
 };
 
+if (!pathToRead){
+  console.error("No path specified") //<=err
+}
+
 readAbsolutePath(pathToRead);
 
-process.on('exit', () => {
-  console.log(JSON.stringify(finalObject));
-});
+  process.on('exit', () => {
+    console.log(JSON.stringify(finalObject));
+  });
 
 // parametr - filtr 
 // console.table 
