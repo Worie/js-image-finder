@@ -14,18 +14,17 @@ const regexps = require('./regexps');
 const imageTest = regexps.imageTest;
 const customTest = regexps.customTest(regexp) || imageTest;
 
+if (!pathToRead){
+  throw new Error("No path specified");
+}
+
 const finalObject = {
   matches: []
 };
 
-// handle error
-if (!pathToRead){
-  console.error("No path specified");
-}
-
-  if (path.isAbsolute(pathToRead)) {
-    pathToRead = path.relative(__dirname, pathToRead) || './';
-  };
+if (path.isAbsolute(pathToRead)) {
+  pathToRead = path.relative(__dirname, pathToRead) || './';
+};
 
 const readAbsolutePath = function readAbsolutePath (pathToRead) {
   fs.readdir(pathToRead, function (err, files) {
@@ -50,15 +49,11 @@ const readAbsolutePath = function readAbsolutePath (pathToRead) {
   });
 };
 
-if (!pathToRead){
-  console.error("No path specified") //<=err
-}
-
 readAbsolutePath(pathToRead);
 
-  process.on('exit', () => {
-    console.log(JSON.stringify(finalObject));
-  });
+process.on('exit', () => {
+  console.log(JSON.stringify(finalObject));
+});
 
 // parametr - filtr 
 // console.table 
